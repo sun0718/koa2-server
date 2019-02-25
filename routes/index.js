@@ -6,7 +6,7 @@ router.get('/', routerFun.index)
 
 router.get('/string', async (ctx, next) => {
   console.log(ctx.request)
-  ctx.body = 'koa2 string12345ssss'
+  ctx.body = 'koa2 string12345ssss1'
 })
 
 router.get('/json', async (ctx, next) => {
