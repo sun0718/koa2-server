@@ -1,0 +1,4 @@
+## Project setup
+```
+npm install
+```
