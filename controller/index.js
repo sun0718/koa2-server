@@ -24,7 +24,7 @@ module.exports = {
         })
         console.log(hello)
         await ctx.render('index', {
-            title: `Hello Koa 2!${hello}`
+            title: `Hello Koa 2!${hello}comeon`
         })
     }
 }

@@ -2,6 +2,7 @@ const router = require('koa-router')()
 
 const routerFun = require('../controller/index')
 
+debugger
 router.get('/', routerFun.index)
 
 router.get('/string', async (ctx, next) => {
