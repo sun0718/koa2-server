@@ -10,7 +10,7 @@ const bodyparser = require('koa-bodyparser')
 // 输出请求日志的功能
 const logger = require('koa-logger')
 // 跨域设置
-const cors = require('koa2-cors');
+// const cors = require('koa2-cors');
 //node项目配置文件的管理
 const config = require('config');
 
@@ -21,17 +21,7 @@ const users = require('./routes/users')
 // 实例化Koa
 const app = new Koa()
 
-app.use(async (ctx, next)=> {
-  ctx.set('Access-Control-Allow-Origin', 'https://203.195.175.18');
-  ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
-  ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-  if (ctx.method == 'OPTIONS') {
-    console.log('000')
-    ctx.body = 200; 
-  } else {
-    await next();
-  }
-});
+// app.use(cors());
 
 // error handler
 onerror(app)
