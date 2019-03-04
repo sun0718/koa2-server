@@ -22,7 +22,7 @@ const users = require('./routes/users')
 const app = new Koa()
 
 app.use(cors({
-  origin:'http://localhost:80',  //允许这个域名访问
+  origin:['203.195.175.18'],  //允许这个域名访问
   credentials: true,
   methods:['GET','POST','PUT','DELETE','OPTIONS'], // 只允许http请求方式
   allowedHeaders:['Conten-Type','Authorization'] // 只允许带着两种请求头的链接访问
