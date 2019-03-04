@@ -22,7 +22,7 @@ const users = require('./routes/users')
 const app = new Koa()
 
 app.use(cors({
-  origin:['https://203.195.175.18'],  //允许这个域名访问
+  origin:['http://203.195.175.18'],  //允许这个域名访问
   methods:['GET','POST','PUT','DELETE','OPTION'], // 只允许http请求方式
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
   maxAge: 5,
