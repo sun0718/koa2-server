@@ -21,14 +21,16 @@ const users = require('./routes/users')
 // 实例化Koa
 const app = new Koa()
 
-app.use(cors({
-  origin:['https://203.195.175.18'],  //允许这个域名访问
-  methods:['GET','POST','PUT','DELETE','OPTION'], // 只允许http请求方式
-  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-  maxAge: 5,
-  credentials: true,
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'] // 只允许带着两种请求头的链接访问
-}))
+app.use(async (ctx, next)=> {
+  ctx.set('Access-Control-Allow-Origin', 'https://203.195.175.18');
+  ctx.set('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
+  ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  if (ctx.method == 'OPTIONS') {
+    ctx.body = 200; 
+  } else {
+    await next();
+  }
+});
 
 // error handler
 onerror(app)
