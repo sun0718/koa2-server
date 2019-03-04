@@ -39,7 +39,7 @@ app.use(bodyparser({
 }))
 app.use(json())
 app.use(logger())
-//静态文件服
+//静态文件
 app.use(require('koa-static')(__dirname + '/public'))
 
 app.use(views(__dirname + '/views', {
