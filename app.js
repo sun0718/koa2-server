@@ -21,7 +21,11 @@ const users = require('./routes/users')
 // 实例化Koa
 const app = new Koa()
 
-app.use(cors())
+app.use(cors({
+  origin:['https://203.195.175.18'],  //允许这个域名访问
+  methods:['GET','POST','PUT','DELETE'], // 只允许http请求方式
+  allowedHeaders:['Conten-Type','Authorization'] // 只允许带着两种请求头的链接访问
+}))
 
 // error handler
 onerror(app)
