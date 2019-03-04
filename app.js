@@ -22,9 +22,18 @@ const users = require('./routes/users')
 const app = new Koa()
 
 app.use(cors({
-  origin:['http://localhost:8080'],  //允许这个域名访问
-  methods:['GET','POST','PUT','DELETE'], // 只允许http请求方式
-  allowedHeaders:['Conten-Type','Authorization'] // 只允许带着两种请求头的链接访问
+  origin: function (ctx) {
+     console.log(ctx.url)
+      // if (ctx.url === '/test') {
+      //     return "*"; // 允许来自所有域名请求
+      // }
+      return 'http://localhost:8080';
+  },
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE','PUT'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }))
 
 // error handler
