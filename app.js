@@ -23,7 +23,7 @@ const app = new Koa()
 
 app.use(cors({
   origin:['https://203.195.175.18'],  //允许这个域名访问
-  methods:['GET','POST','PUT','DELETE'], // 只允许http请求方式
+  methods:['GET','POST','PUT','DELETE','OPTION'], // 只允许http请求方式
   allowedHeaders:['Conten-Type','Authorization'] // 只允许带着两种请求头的链接访问
 }))
 
