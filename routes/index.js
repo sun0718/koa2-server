@@ -1,19 +1,8 @@
 const router = require('koa-router')()
 
-const routerFun = require('../controller/index')
+const routerFun = require('../controller/article')
 
-debugger
-router.get('/', routerFun.index)
-
-router.get('/string', async (ctx, next) => {
-  console.log(ctx.request)
-  ctx.body = 'koa2 string12345ssss1'
-})
-
-router.get('/json', async (ctx, next) => {
-  ctx.body = {
-    title: 'koa2 json'
-  }
-})
+router.post('/postArticle', routerFun.postArticle)
+router.get('/postList', routerFun.postList)
 
 module.exports = router

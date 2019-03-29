@@ -1,14 +1,17 @@
 const mongoose = require('mongoose')
 const config = require('config')
 const chalk = require('chalk')
+
 const hostName = config.get('mongoDB.hostname')
 const port = config.get('mongoDB.port')
 const dbname = config.get('mongoDB.dbname')
+const userName = config.get('mongoDB.username')
+const pwd = config.get('mongoDB.pwd')
 
-const dbUrl = `mongodb://${hostName}:${port}/${dbname}`
+const dbUrl = `mongodb://${userName}:${pwd}@${hostName}:${port}/${dbname}`
 
 function initDb() {
-  mongoose.connect(dbUrl)
+  mongoose.connect(dbUrl,{useNewUrlParser:true,config:{autoIndex:true}})
   
   mongoose.connection.on('connected', error => {
     if(error) {

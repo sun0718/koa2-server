@@ -1,13 +1,11 @@
 const router = require('koa-router')()
 
-router.prefix('/users')
+const routerFun = require('../controller/user')
 
-router.get('/', function (ctx, next) {
-  ctx.body = 'this is a users response!'
-})
-
-router.get('/bar', function (ctx, next) {
-  ctx.body = 'this is a users/bar response'
-})
+router.post('/register', routerFun.register)
+router.put('/signin', routerFun.signin)
+router.get('/userlist', routerFun.userList)
+router.delete('/deleteUser', routerFun.deleteUser)
+router.put('/lockUser', routerFun.lockUser)
 
 module.exports = router

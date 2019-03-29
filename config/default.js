@@ -4,7 +4,10 @@ module.exports = {
     },
     mongoDB:{
         hostname:'203.195.175.18', 
-        port:'27017',
-        dbname:'test'
-    }
+        port:'27027',
+        dbname:'blog',
+        username: 'blogRW',
+        pwd:'123456'
+    },
+    tokenSecret:'sunfafa'
 }
