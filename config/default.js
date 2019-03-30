@@ -9,5 +9,6 @@ module.exports = {
         username: 'blogRW',
         pwd:'123456'
     },
-    tokenSecret:'sunfafa'
+    tokenSecret:'sunfafa',
+    pwdSalt:'sun'
 }

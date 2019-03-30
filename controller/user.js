@@ -1,8 +1,15 @@
 // 权限控制
 const config = require('config')
 
+const bcrypt = require('crypto')
+
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt');
+
+var encryptPassword = (password, salt) => {
+    if (!password || !salt) return ''
+    var salt = new Buffer(salt, 'base64')
+    return bcrypt.pbkdf2Sync(password, salt, 10000, 64, 'sha1').toString('base64')
+  }
 
 // 此文件为路由控制函数
 var model = require('../models/index')
@@ -23,7 +30,7 @@ module.exports = {
                 return;
             }
             // https://www.npmjs.com/package/bcrypt
-            body.password = bcrypt.hashSync(body.password, 10);
+            body.password = bcrypt(body.password, config.get('pwdSalt'));
             let user = await acountModel.find({ acountName: body.acountName })
             if (!user.length || user.length == 0) {
                 const newUser = new acountModel(body);
@@ -60,7 +67,7 @@ module.exports = {
                 }
                 return;
             }
-            if (bcrypt.compareSync(body.password, user.password)) {
+            if (body.password = bcrypt(user.password,config.get('pwdSalt'))) {
                 let payload = {
                     exp: Math.floor(Date.now() / 1000) + (60 * 60),
                     acountName: user.acountName,
