@@ -2,7 +2,6 @@
 const config = require('config')
 
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt');
 
 // 此文件为路由控制函数
 var model = require('../models/index')
