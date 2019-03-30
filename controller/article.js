@@ -65,16 +65,15 @@ module.exports = {
         let currentPage = parseInt(ctx.query && ctx.query.currentPage) || 1
         let pagesize = parseInt(ctx.query && ctx.query.pagesize) || 10
         try {
-            console.log(await articleModel.find({}))
             let allPost = await articleModel.find({}, {
                 categorie : 1,
                 title:1,
                 id:1,
                 createTime:1,
                 like:1,
-                author:1,
                 imageShow:1
             }).skip(--currentPage * pagesize).limit(pagesize).sort('createTime')
+            console.log(allPost)
             ctx.status = 200
             ctx.body = {
                 code: '0000',
