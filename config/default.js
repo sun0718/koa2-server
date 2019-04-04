@@ -9,6 +9,11 @@ module.exports = {
         username: 'blogRW',
         pwd:'123456'
     },
+    mongoDBlocal:{
+        hostname:'localhost', 
+        port:'27017',
+        dbname:'blog'
+    },
     tokenSecret:'sunfafa',
-    pwdSalt:'sun'
+    pwdSalt:'sun-long'
 }

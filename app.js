@@ -10,10 +10,12 @@ const bodyparser = require('koa-bodyparser')
 // 输出请求日志的功能
 const logger = require('koa-logger')
 //node项目配置文件的管理
-const config = require('config');
+const config = require('config')
+const koajwt = require('koa-jwt')
 
-//引入路由函数
-const index = require('./routes/index')
+const token = require('./controller/token')
+//引入路由函数koa
+const index = require('./routes/article')
 const users = require('./routes/users')
 // 实例化Koa
 const app = new Koa()
@@ -32,6 +34,15 @@ app.use(require('koa-static')(__dirname + '/public'))
 
 app.use(views(__dirname + '/views', {
   extension: 'pug'
+}))
+
+// 错误处理
+app.use(token())
+// 校验token
+app.use(koajwt({
+  secret: config.get('tokenSecret')
+}).unless({
+  path: [/^\/signin/,/^\/signOut/,/^\/post/,/^\/uploadImage/]
 }))
 
 // middleware
@@ -53,7 +64,7 @@ app.on('error', (err, ctx) => {
 
 const PORT = process.env.PORT || config.get('host.port');
 
-app.listen(PORT,function(){
+app.listen(PORT, function () {
   console.log(`Server is run ${PORT} PROT`)
 })
 

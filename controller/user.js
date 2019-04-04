@@ -1,10 +1,9 @@
 // 权限控制
 const config = require('config')
-
 const bcrypt = require('crypto')
-
 const jwt = require('jsonwebtoken')
 
+// 密码加密
 var encryptPassword = (password, salt) => {
     if (!password || !salt) return ''
     var salt = new Buffer(salt, 'base64')
@@ -14,13 +13,13 @@ var encryptPassword = (password, salt) => {
 // 此文件为路由控制函数
 var model = require('../models/index')
 
-
 let acountModel = model.acountModel
 
 module.exports = {
     // 添加接口  
     register: async (ctx, next) => {
         const { body } = ctx.request;
+
         try {
             if (!body.acountName || !body.password) {
                 ctx.status = 400;
@@ -30,7 +29,7 @@ module.exports = {
                 return;
             }
             // https://www.npmjs.com/package/bcrypt
-            body.password = bcrypt(body.password, config.get('pwdSalt'));
+            body.password = encryptPassword(body.password, config.get('pwdSalt'));
             let user = await acountModel.find({ acountName: body.acountName })
             if (!user.length || user.length == 0) {
                 const newUser = new acountModel(body);
@@ -67,17 +66,17 @@ module.exports = {
                 }
                 return;
             }
-            if (body.password = bcrypt(user.password,config.get('pwdSalt'))) {
+            console.log('--------------')
+            if (user.password == encryptPassword(body.password,config.get('pwdSalt'))) {
                 let payload = {
-                    exp: Math.floor(Date.now() / 1000) + (60 * 60),
+                    exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2),
                     acountName: user.acountName,
                     userName: user.userName,
                     id: user._id
                 }
-
                 //https://www.npmjs.com/package/jsonwebtoken
                 let token = jwt.sign(payload, config.get('tokenSecret'))
-
+                // console.log(token)
                 ctx.status = 200
                 ctx.body = {
                     result: {

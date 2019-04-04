@@ -25,19 +25,25 @@ const articleSchema = mongoose.Schema({
   id:Number,
   title: String,
   con: String,
+  preface: String,
+  mavonCon:String,
   author: String,
   like: String,
   discuss: Array,
   categorie : String,
   tags:Array,
   imageShow: String,
-  oldEditTimeAndEvent:Array,
-  goTop:Boolean,
+  EditTime:Array,
+  overHead:{
+    type: Number,
+    default: 0
+  },
   createTime: {
     type: String,
     default: Date.now()
   }
 })
+
 
 // 判断数据库是否存在这个表，存在则直接返回，不存在新建模型
 const acountModel = mongoose.models.acount || mongoose.model('acount', acountSchema)

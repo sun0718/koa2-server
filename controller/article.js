@@ -1,7 +1,7 @@
 // 权限控制
 const config = require('config')
-
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
 
 // 此文件为路由控制函数
 var model = require('../models/index')
@@ -63,28 +63,49 @@ module.exports = {
     postList: async (ctx, next) => {
         let currentPage = parseInt(ctx.query && ctx.query.currentPage) || 1
         let pagesize = parseInt(ctx.query && ctx.query.pagesize) || 10
+        let ad = ctx.query.getAd
+        let adLen = 0
+        let overHead = []
         try {
-            let allPost = await articleModel.find({}, {
+            if(ad){
+                overHead = await articleModel.find({overHead:{$in:[1,2,3,4]}}, {
+                    categorie : 1,
+                    title:1,
+                    id:1,
+                    _id:0,
+                    createTime:1,
+                    like:1,
+                    imageShow:1,
+                    preface:1
+                })
+                adLen = 3 - overHead.length
+            }
+            let allPost = await articleModel.find({overHead:0}, {
                 categorie : 1,
                 title:1,
                 id:1,
+                _id:0,
                 createTime:1,
                 like:1,
-                imageShow:1
-            }).skip(--currentPage * pagesize).limit(pagesize).sort('createTime')
-            console.log(allPost)
+                imageShow:1,
+                preface:1
+            }).skip(--currentPage * pagesize).limit(pagesize + adLen).sort('createTime')
+            console.log('allPost',allPost)
             ctx.status = 200
             ctx.body = {
                 code: '0000',
                 result: {
-                    list: allPost ? allPost : [],
+                    list: {
+                        allPost:allPost,
+                        overHead:overHead
+                    },
                     count: await articleModel.countDocuments()
                 },
                 msg: '列表查询成功'
             }
         } catch (error) {
             ctx.body = {
-                code: ' ',
+                code: '0001',
                 msg: '列表查询失败'
             }
         }
@@ -92,9 +113,10 @@ module.exports = {
     },
     // 博客详情
     getBlog : async (ctx, next) => {
-        var id = ctx.query.id
+        var id = ctx.params.id
+        console.log(id)
         try {
-            var result = await articleModel.findById(id)
+            var result = await articleModel.findOne({id:id})
             if (result) {
                 ctx.body = {
                     code: '0000',
@@ -155,5 +177,25 @@ module.exports = {
               msg: '编辑失败'
             }
           }
+    },
+    // 上传文件
+    uploadImage: async (ctx, next) => {
+        var { file } = ctx.req
+        if (ctx.req.file){
+            ctx.body = {
+                code: '0000',
+                msg:'upload success',
+                result:{
+                    filename:file.filename,
+                    path:file.path,
+                    originalname:file.originalname
+                }
+            };
+        } else {
+            ctx.body = {
+                code: '0001',
+                msg:'upload error'
+            };
+        }
     }
 }
