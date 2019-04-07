@@ -19,7 +19,7 @@ module.exports = function () {
                 } catch (err) {
                     ctx.body = {
                         code: '0001',
-                        msg: '1token verify fail: ' + err
+                        msg: 'token verify fail: ' + err
                     }
                 }
             }

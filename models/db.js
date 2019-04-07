@@ -2,9 +2,8 @@ const mongoose = require('mongoose')
 const config = require('config')
 const chalk = require('chalk')
 
-const NODE_ENV = process.env.NODE_ENV
-
-const DBConfig = NODE_ENV == 'development' ? config.get('mongoDBlocal') : config.get('mongoDB')
+// const DBConfig = process.env.NODE_ENV == 'development' ? config.get('mongoDBlocal') : config.get('mongoDB')
+const DBConfig = config.get('mongoDB')
 
 const hostName = DBConfig.hostname
 const port = DBConfig.port

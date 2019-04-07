@@ -32,9 +32,7 @@ app.use(logger())
 //静态文件
 app.use(require('koa-static')(__dirname + '/public'))
 
-app.use(views(__dirname + '/views', {
-  extension: 'pug'
-}))
+app.use(views(__dirname + '/views'))
 
 // 错误处理
 app.use(token())
@@ -42,7 +40,7 @@ app.use(token())
 app.use(koajwt({
   secret: config.get('tokenSecret')
 }).unless({
-  path: [/^\/signin/,/^\/signOut/,/^\/post/,/^\/uploadImage/]
+  path: [/^\/signin/,/^\/signOut/,/^\/getPost/,/^\/uploadImage/]
 }))
 
 // middleware

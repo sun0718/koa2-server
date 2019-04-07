@@ -66,7 +66,6 @@ module.exports = {
                 }
                 return;
             }
-            console.log('--------------')
             if (user.password == encryptPassword(body.password,config.get('pwdSalt'))) {
                 let payload = {
                     exp: Math.floor(Date.now() / 1000) + (60 * 60 * 2),
@@ -107,7 +106,6 @@ module.exports = {
         let pagesize = parseInt(ctx.query && ctx.query.pagesize) || 10
         try {
             let allUser = await acountModel.find({}, null).skip(--currentPage * pagesize).limit(pagesize).sort('createTime')
-            ctx.status = 200
             ctx.body = {
                 code: '0000',
                 result: {
@@ -118,7 +116,7 @@ module.exports = {
             }
         } catch (error) {
             ctx.body = {
-                code: 0001,
+                code: '0001',
                 msg: '列表查询失败'
             }
         }
