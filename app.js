@@ -40,7 +40,7 @@ app.use(token())
 app.use(koajwt({
   secret: config.get('tokenSecret')
 }).unless({
-  path: [/^\/signin/,/^\/signOut/,/^\/getPost/,/^\/uploadImage/]
+  path: [/^\/signin/,/^\/signOut/,/^\/getPosts/,/^\/uploadImage/]
 }))
 
 // middleware
