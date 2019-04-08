@@ -36,7 +36,7 @@ module.exports = function () {
                 ctx.body = {
                     code: '0001',
                     err : err,
-                    msg: '40400'
+                    msg : '其他错误'
                 }
             }
         }

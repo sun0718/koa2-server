@@ -3,9 +3,13 @@ const path = require('path')
 const multer = require('koa-multer')
 const routerFun = require('../controller/article')
 
+
+console.log(path.resolve(__dirname, '../upload'))
 //文件上传配置
 let storage = multer.diskStorage({
-    destination: process.env.NODE_ENV == 'development' ? path.resolve(__dirname, '../../upload') :  path.resolve(__dirname, './upload'),
+    // destination: process.env.NODE_ENV == 'development' ? path.resolve(__dirname, '../../upload') :  path.resolve(__dirname, './upload'),
+    // destination: path.resolve(__dirname, '../upload'),
+    destination: 'upload',
     filename: (ctx, file, cb) => {
         // var fileFormat = (file.originalname).split(".");  //以点分割成数组，数组的最后一项就是后缀名
         // cb(null,Date.now() + "." + fileFormat[fileFormat.length - 1]);
