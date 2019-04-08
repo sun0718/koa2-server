@@ -3,6 +3,7 @@ const path = require('path')
 const multer = require('koa-multer')
 const routerFun = require('../controller/article')
 
+console.log(process.env.NODE_ENV == 'development')
 console.log(process.env.NODE_ENV == 'development' ? path.resolve(__dirname, '../../upload') :  path.resolve(__dirname, './upload'))
 
 //文件上传配置
