@@ -80,6 +80,7 @@ module.exports = {
                 ctx.body = {
                     result: {
                         id: user._id,
+                        acountName: user.acountName,
                         token: token
                     },
                     code: '0000',
