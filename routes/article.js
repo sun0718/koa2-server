@@ -5,6 +5,10 @@ const routerFun = require('../controller/article')
 
 
 console.log(path.resolve(__dirname, '../upload'))
+console.log(path.resolve(__dirname, 'upload'))
+console.log(path.resolve(__dirname, '/upload'))
+console.log(path.resolve(__dirname, '/home/upload'))
+console.log('/home/upload')
 //文件上传配置
 let storage = multer.diskStorage({
     // destination: process.env.NODE_ENV == 'development' ? path.resolve(__dirname, '../../upload') :  path.resolve(__dirname, './upload'),
