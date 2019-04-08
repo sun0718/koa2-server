@@ -193,8 +193,7 @@ module.exports = {
             };
         } else {
             ctx.body = {
-                code: '0000',
-                file: file,
+                code: '0001',
                 msg: 'upload error'
             };
         }

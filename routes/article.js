@@ -27,7 +27,8 @@ let upload = multer({ storage: storage, fileFilter: fileFilter });
 router.post('/postArticle', routerFun.postArticle)
 //后台列表
 router.get('/postList', routerFun.postList)
-router.post('/uploadImage', upload.single('file'), routerFun.uploadImage)
+router.post('/uploadImage', routerFun.uploadImage)
+// router.post('/uploadImage', upload.single('file'), routerFun.uploadImage)
 //前端列表
 router.get('/getPosts', routerFun.postList)
 router.get('/getPost/:id', routerFun.getBlog)
