@@ -188,7 +188,7 @@ module.exports = {
                 result: {
                     filename: file.filename,
                     path: file.path,
-                    originalname: file.originalname
+                    originalname: `http://sunfafa.cn/upload/${file.originalname}`
                 }
             };
         } else {
