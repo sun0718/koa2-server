@@ -194,6 +194,7 @@ module.exports = {
         } else {
             ctx.body = {
                 code: '0001',
+                file: file,
                 msg: 'upload error'
             };
         }
