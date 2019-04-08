@@ -5,13 +5,15 @@ const routerFun = require('../controller/article')
 
 //文件上传配置
 let storage = multer.diskStorage({
-    destination: process.env.NODE_ENV == 'development'? path.resolve(__dirname,'../../../Upload') : '/home/upload',
+    // destination: process.env.NODE_ENV == 'development'? path.resolve(__dirname,'../../../Upload') : '/home/upload',
+    destination: '/home/upload',
     filename: (ctx, file, cb)=>{
         // var fileFormat = (file.originalname).split(".");  //以点分割成数组，数组的最后一项就是后缀名
         // cb(null,Date.now() + "." + fileFormat[fileFormat.length - 1]);
         cb(null,file.originalname);
     }
 });
+
 //过滤上传的后缀为txt的文件
 let fileFilter = (ctx, file ,cb)=>{
     if (file.originalname.split('.').splice(-1) == 'txt'){
