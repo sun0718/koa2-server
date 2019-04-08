@@ -187,8 +187,8 @@ module.exports = {
                 msg: 'upload success',
                 result: {
                     filename: file.filename,
-                    path: file.path,
-                    originalname: `http://sunfafa.cn/upload/${file.originalname}`
+                    path: `http://sunfafa.cn/upload/${file.originalname}`,
+                    originalname: file.originalname
                 }
             };
         } else {
