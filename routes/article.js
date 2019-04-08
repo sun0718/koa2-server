@@ -5,7 +5,7 @@ const routerFun = require('../controller/article')
 
 //文件上传配置
 let storage = multer.diskStorage({
-    destination: 'upload/',
+    destination: process.env.NODE_ENV == 'development' ? path.resolve(__dirname, '../../upload') : '/home/upload',
     filename: (ctx, file, cb) => {
         // var fileFormat = (file.originalname).split(".");  //以点分割成数组，数组的最后一项就是后缀名
         // cb(null,Date.now() + "." + fileFormat[fileFormat.length - 1]);
@@ -27,8 +27,7 @@ let upload = multer({ storage: storage, fileFilter: fileFilter });
 router.post('/postArticle', routerFun.postArticle)
 //后台列表
 router.get('/postList', routerFun.postList)
-router.post('/uploadImage', routerFun.uploadImage)
-// router.post('/uploadImage', upload.single('file'), routerFun.uploadImage)
+router.post('/uploadImage', upload.single('file'), routerFun.uploadImage)
 //前端列表
 router.get('/getPosts', routerFun.postList)
 router.get('/getPost/:id', routerFun.getBlog)
