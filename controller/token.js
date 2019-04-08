@@ -35,7 +35,8 @@ module.exports = function () {
                 err.status = 404
                 ctx.body = {
                     code: '0001',
-                    msg: '404'
+                    err : err,
+                    msg: '40400'
                 }
             }
         }
