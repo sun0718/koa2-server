@@ -102,7 +102,7 @@ module.exports = {
                     like: 1,
                     imageShow: 1,
                     preface: 1
-                }).skip(--currentPage * pagesize).limit(pagesize + adLen).sort({'createTime':-1})
+                }).skip(--currentPage * pagesize).limit(pagesize).sort({'createTime':-1})
             }
             
             ctx.body = {

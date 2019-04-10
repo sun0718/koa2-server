@@ -48,7 +48,7 @@ const articleSchema = mongoose.Schema({
   },
   imageShow: String,
   overHead:{
-    type: String,
+    type: Number,
     default: 0
   },
   createTime: {
