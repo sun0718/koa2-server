@@ -4,6 +4,19 @@ const initDb = require('./db')
 //连接数据库
 initDb()
 
+var getTime = function(){
+  var now = new Date();
+  var yy = now.getFullYear();      //年
+  var mm = now.getMonth() + 1;     //月
+  var dd = now.getDate();          //日
+  var clock = yy + "-";
+  if(mm < 10) clock += "0";
+  clock += mm + "-";
+  if(dd < 10) clock += "0";
+  clock += dd + " ";
+  return clock;
+}
+
 // 定义一个用户的数据骨架
 const acountSchema = mongoose.Schema({
   acountName: String,
@@ -15,8 +28,8 @@ const acountSchema = mongoose.Schema({
   sex: String,
   signature: String,
   createTime: {
-    type: Number,
-    default: Date.now()
+    type: String,
+    default: getTime()
   }
 })
 
@@ -35,12 +48,12 @@ const articleSchema = mongoose.Schema({
   },
   imageShow: String,
   overHead:{
-    type: Number,
+    type: String,
     default: 0
   },
   createTime: {
     type: String,
-    default: Date.now()
+    default: getTime()
   }
 })
 
@@ -61,12 +74,6 @@ const cateSchema = mongoose.Schema({
     type: String,
     default: Date.now()
   }
-})
-
-// 文章与标签骨架
-const cateAndpostSchema = mongoose.Schema({
-  id :Number,
-  name: String
 })
 
 

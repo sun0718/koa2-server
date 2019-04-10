@@ -68,6 +68,7 @@ module.exports = {
         let ad = ctx.query.getAd
         let adLen = 0
         let overHead = []
+        let allPost = []
         try {
             if (ad) {
                 overHead = await articleModel.find({ overHead: { $in: [1, 2, 3, 4] } }, {
@@ -81,17 +82,29 @@ module.exports = {
                     preface: 1
                 })
                 adLen = 3 - overHead.length
+                allPost = await articleModel.find({ overHead: 0 }, {
+                    categorie: 1,
+                    title: 1,
+                    id: 1,
+                    _id: 0,
+                    createTime: 1,
+                    like: 1,
+                    imageShow: 1,
+                    preface: 1
+                }).skip(--currentPage * pagesize).limit(pagesize + adLen).sort({'createTime':-1})
+            }else{
+                allPost = await articleModel.find({}, {
+                    categorie: 1,
+                    title: 1,
+                    id: 1,
+                    _id: 0,
+                    createTime: 1,
+                    like: 1,
+                    imageShow: 1,
+                    preface: 1
+                }).skip(--currentPage * pagesize).limit(pagesize + adLen).sort({'createTime':-1})
             }
-            let allPost = await articleModel.find({ overHead: 0 }, {
-                categorie: 1,
-                title: 1,
-                id: 1,
-                _id: 0,
-                createTime: 1,
-                like: 1,
-                imageShow: 1,
-                preface: 1
-            }).skip(--currentPage * pagesize).limit(pagesize + adLen).sort('createTime')
+            
             ctx.body = {
                 code: '0000',
                 result: {
@@ -118,9 +131,17 @@ module.exports = {
         try {
             var result = await articleModel.findOne({ id: id })
             if (result) {
+                var prevBlog = await articleModel.find({'_id':{ '$lt': result._id}}).sort({_id: -1}).limit(1)
+                var nextBlog = await articleModel.find({'_id':{ '$gt': result._id}}).sort({_id: -1}).limit(1)
                 ctx.body = {
                     code: '0000',
-                    data: result
+                    data: {
+                        result:result,
+                        sibling:{
+                            nextBlog:nextBlog[0],
+                            prevBlog:prevBlog[0]
+                        }
+                    }
                 }
             } else {
                 ctx.body = {
@@ -159,11 +180,11 @@ module.exports = {
     },
     // 顶置文章
     goTopBlog: async (ctx, next) => {
-        let go = ctx.request.body.goTop ? false : true
+        let overHead = ctx.request.body.goTop ? false : true
         let result = await articleModel.update(
             { id: ctx.params.id },
             {
-                $set: { overHead: go }
+                $set: { overHead: overHead }
             }
         )
         if (result) {
@@ -187,7 +208,7 @@ module.exports = {
                 msg: 'upload success',
                 result: {
                     filename: file.filename,
-                    path: `http://sunfafa.cn/upload/${file.originalname}`,
+                    path: `https://sunfafa.cn/upload/${file.originalname}`,
                     originalname: file.originalname
                 }
             };

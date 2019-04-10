@@ -9,7 +9,7 @@ let storage = multer.diskStorage({
     filename: (ctx, file, cb) => {
         // var fileFormat = (file.originalname).split(".");  //以点分割成数组，数组的最后一项就是后缀名
         // cb(null,Date.now() + "." + fileFormat[fileFormat.length - 1]);
-        cb(null, file.originalname);
+        cb(null, file.originalname.replace(/\s+/,''));
     }
 });
 
@@ -25,6 +25,7 @@ let fileFilter = (ctx, file, cb) => {
 let upload = multer({ storage: storage, fileFilter: fileFilter });
 
 router.post('/postArticle', routerFun.postArticle)
+router.get('/postArticle/:id', routerFun.getBlog)
 //后台列表
 router.get('/postList', routerFun.postList)
 router.post('/uploadImage', upload.single('file'), routerFun.uploadImage)
