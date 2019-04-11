@@ -80,7 +80,7 @@ module.exports = {
                     like: 1,
                     imageShow: 1,
                     preface: 1
-                })
+                }).sort({'createTime':-1})
                 adLen = 3 - overHead.length
                 allPost = await articleModel.find({ overHead: 0 }, {
                     categorie: 1,
