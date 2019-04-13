@@ -41,4 +41,6 @@ router.get('/getCates', routerFun.getCates)
 router.get('/tagList', routerFun.tagList)
 router.post('/addTag', routerFun.addTag)
 
+router.get('/getclassList', routerFun.getclassList)
+
 module.exports = router

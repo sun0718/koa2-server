@@ -13,7 +13,7 @@ var getTime = function(){
   if(mm < 10) clock += "0";
   clock += mm + "-";
   if(dd < 10) clock += "0";
-  clock += dd + " ";
+  clock += dd;
   return clock;
 }
 

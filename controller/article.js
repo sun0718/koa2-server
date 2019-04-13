@@ -80,7 +80,7 @@ module.exports = {
                     like: 1,
                     imageShow: 1,
                     preface: 1
-                }).sort({'createTime':-1})
+                }).sort({ 'createTime': -1 })
                 adLen = 3 - overHead.length
                 allPost = await articleModel.find({ overHead: 0 }, {
                     categorie: 1,
@@ -91,8 +91,8 @@ module.exports = {
                     like: 1,
                     imageShow: 1,
                     preface: 1
-                }).skip(--currentPage * pagesize).limit(pagesize + adLen).sort({'createTime':-1})
-            }else{
+                }).skip(--currentPage * pagesize).limit(pagesize + adLen).sort({ 'createTime': -1 })
+            } else {
                 allPost = await articleModel.find({}, {
                     categorie: 1,
                     title: 1,
@@ -102,9 +102,9 @@ module.exports = {
                     like: 1,
                     imageShow: 1,
                     preface: 1
-                }).skip(--currentPage * pagesize).limit(pagesize).sort({'createTime':-1})
+                }).skip(--currentPage * pagesize).limit(pagesize).sort({ 'createTime': -1 })
             }
-            
+
             ctx.body = {
                 code: '0000',
                 result: {
@@ -131,15 +131,15 @@ module.exports = {
         try {
             var result = await articleModel.findOne({ id: id })
             if (result) {
-                var prevBlog = await articleModel.find({'_id':{ '$lt': result._id}}).sort({_id: -1}).limit(1)
-                var nextBlog = await articleModel.find({'_id':{ '$gt': result._id}}).sort({_id: -1}).limit(1)
+                var prevBlog = await articleModel.find({ '_id': { '$lt': result._id } }).sort({ _id: -1 }).limit(1)
+                var nextBlog = await articleModel.find({ '_id': { '$gt': result._id } }).sort({ _id: -1 }).limit(1)
                 ctx.body = {
                     code: '0000',
                     data: {
-                        result:result,
-                        sibling:{
-                            nextBlog:nextBlog[0],
-                            prevBlog:prevBlog[0]
+                        result: result,
+                        sibling: {
+                            nextBlog: nextBlog[0],
+                            prevBlog: prevBlog[0]
                         }
                     }
                 }
@@ -224,13 +224,13 @@ module.exports = {
     editCates: async (ctx, next) => {
         const { body } = ctx.request
         try {
-            var append=true,edit=true,remove=true;
+            var append = true, edit = true, remove = true;
             if (body.append.length > 0) {
                 try {
                     await cateModel.insertMany(body.append);
-                 } catch (e) {
+                } catch (e) {
                     var append = false
-                 }
+                }
             }
             if (body.edit.length > 0) {
                 try {
@@ -238,7 +238,7 @@ module.exports = {
                         await cateModel.updateMany({ id: body.edit[i].id }, { $set: { label: body.edit[i].label } })
                     }
                 } catch (e) {
-                    var edit =  false
+                    var edit = false
                 }
             }
             if (body.remove.length > 0) {
@@ -250,7 +250,7 @@ module.exports = {
                     var remove = false
                 }
             }
-            if(append && edit && remove){
+            if (append && edit && remove) {
                 ctx.body = {
                     code: '0000',
                     msg: '修改成功'
@@ -263,7 +263,7 @@ module.exports = {
             }
         }
     },
-
+    // 查询分类
     getCates: async (ctx, next) => {
         var catesResult = await cateModel.find({}).sort({ "id": 1 })
         if (!catesResult) {
@@ -282,6 +282,7 @@ module.exports = {
             }
         }
     },
+    // 添加分类
     addCate: async (ctx, next) => {
         var { body } = ctx.request
         var cate = new cateModel({
@@ -304,20 +305,20 @@ module.exports = {
     // 标签列表 
     tagList: async (ctx, next) => {
         var tagResult = await tagModel.find({})
-            if (!tagResult) {
-                ctx.body = {
-                    code: '0001',
-                    msg: '没有查询到数据'
-                }
-            } else {
-                ctx.body = {
-                    code: '0000',
-                    result: tagResult
-                }
+        if (!tagResult) {
+            ctx.body = {
+                code: '0001',
+                msg: '没有查询到数据'
             }
+        } else {
+            ctx.body = {
+                code: '0000',
+                result: tagResult
+            }
+        }
     },
-
-    addTag: async(ctx,next) => {
+    // 添加标签
+    addTag: async (ctx, next) => {
         var { body } = ctx.request
         addResult = await new tagModel(body).save()
         if (addResult) {
@@ -331,5 +332,33 @@ module.exports = {
                 msg: '创建失败'
             }
         }
+    },
+    // 获取分类
+    getclassList: async (ctx, next) => {
+        console.log(ctx)
+        var key = ctx.query.class
+        try {
+            // var calssResult =await articleModel.find({categorie:{$in:}})
+            var calssResult = await articleModel.aggregate([{ "$unwind": "$categorie" },
+            { "$match": { "categorie": key } },
+            { "$project": { "id": 1, "title": 1, "createTime": 1, "imageShow": 1, "like": 1 } }]).sort({'createTime':-1})
+            if (calssResult) {
+                ctx.body = {
+                    code: '0000',
+                    result: calssResult
+                }
+            }else{
+                ctx.body = {
+                    code: '0000',
+                    result: '没有匹配的的数据'
+                }
+            }
+        } catch (error) {
+            ctx.body = {
+                code: '0001',
+                result: '查询失败'
+            }
+        }
+
     }
 }

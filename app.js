@@ -24,7 +24,10 @@ const app = new Koa()
 onerror(app)
 
 // middlewares
-app.use(bodyparser())
+app.use(bodyparser({
+  jsonLimit: '10mb',
+  formLimit: '10mb'
+}))
 
 app.use(json())
 
@@ -40,7 +43,7 @@ app.use(token())
 app.use(koajwt({
   secret: config.get('tokenSecret')
 }).unless({
-  path: [/^\/signin/,/^\/signOut/,/^\/getPosts/,/^\/getPost/,/^\/uploadImage/]
+  path: [/^\/signin/,/^\/signOut/,/^\/getPosts/,/^\/getPost/,/^\/uploadImage/,/^\/getclassList/]
 }))
 
 // middleware
