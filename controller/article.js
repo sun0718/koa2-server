@@ -202,13 +202,15 @@ module.exports = {
     // 上传文件
     uploadImage: async (ctx, next) => {
         var { file } = ctx.req
-        if (ctx.req.file) {
+        console.log(file)
+        if (file) {
             ctx.body = {
                 code: '0000',
                 msg: 'upload success',
                 result: {
                     filename: file.filename,
-                    path: `https://sunfafa.cn/upload/${file.originalname}`,
+                    // path: `https://sunfafa.cn/upload/${file.originalname}`,
+                    path: file.path,
                     originalname: file.originalname
                 }
             };

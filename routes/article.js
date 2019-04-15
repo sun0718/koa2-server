@@ -3,6 +3,7 @@ const path = require('path')
 const multer = require('koa-multer')
 const routerFun = require('../controller/article')
 
+var maxFilesSize = 100 * 1000 * 1000 // 100MB
 //文件上传配置
 let storage = multer.diskStorage({
     destination: process.env.NODE_ENV == 'development' ? path.resolve(__dirname, '../../upload') :  '/home/upload',
@@ -22,7 +23,7 @@ let fileFilter = (ctx, file, cb) => {
     }
 }
 //文件上传加载配置
-let upload = multer({ storage: storage, fileFilter: fileFilter });
+let upload = multer({ storage: storage, fileFilter: fileFilter,limits:{fieldSize:maxFilesSize} });
 
 router.post('/postArticle', routerFun.postArticle)
 router.get('/postArticle/:id', routerFun.getBlog)

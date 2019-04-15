@@ -58,6 +58,13 @@ app.use(async (ctx, next) => {
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 
+//错误捕获
+// app.use(async (ctx, next) => {
+//   var err = new Error('Not Found')
+//   err.status = 404
+//   next(err)
+// })
+
 // error-handling
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
