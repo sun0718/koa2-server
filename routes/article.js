@@ -30,6 +30,8 @@ router.get('/postArticle/:id', routerFun.getBlog)
 //后台列表
 router.get('/postList', routerFun.postList)
 router.post('/uploadImage', upload.single('file'), routerFun.uploadImage)
+router.post('/updateBlog',routerFun.updateBlog)
+router.delete('/deleteBlog/:id',routerFun.deleteBlog)
 //前端列表
 router.get('/getPosts', routerFun.postList)
 router.get('/getPost/:id', routerFun.getBlog)

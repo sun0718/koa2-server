@@ -14,22 +14,11 @@ module.exports = {
     // 发布文章 
     postArticle: async (ctx, next) => {
         let { body } = ctx.request;
-        let blogs = await articleModel.find()
-        let idNum = await articleModel.find().countDocuments() + 1
-        let blog
-        let addResult
-        if (blogs.length !== 0) {
-            blog = new articleModel({
-                id: idNum + 1,
-                ...body
-            })
-        } else {
-            blog = new articleModel({
-                id: 1,
-                ...body
-            })
-        }
-
+        let blog,addResult
+        blog = new articleModel({
+            id: Date.now(),
+            ...body
+        })
         addResult = await blog.save()
 
         if (addResult) {
@@ -46,22 +35,21 @@ module.exports = {
     },
     // 删除文章接口
     deleteBlog: async (ctx, next) => {
-        const id = ctx.query.id
-        await articleModel.findByIdAndRemove(id).exec((err) => {
-            if (err) {
-                ctx.body = {
-                    code: '0001',
-                    msg: '删除失败'
-                }
-            } else {
-                ctx.body = {
-                    code: '0000',
-                    msg: '删除成功'
-                }
+        const id = ctx.params.id
+        var result = await articleModel.remove({id:id})
+        if (result.ok == 1) {
+            ctx.body = {
+                code: '0000',
+                msg: '删除成功'
             }
-        })
+        } else {
+            ctx.body = {
+                code: '0001',
+                msg: '删除失败'
+            }
+        }
     },
-    // 列表    
+    // 所有文章列表    
     postList: async (ctx, next) => {
         let currentPage = parseInt(ctx.query && ctx.query.currentPage) || 1
         let pagesize = parseInt(ctx.query && ctx.query.pagesize) || 10
@@ -160,10 +148,10 @@ module.exports = {
     // 重新编辑
     updateBlog: async (ctx, next) => {
         let { body } = ctx.request
-        let result = await Blog.update(
-            { id: ctx.params.id },
+        let result = await articleModel.update(
+            { id: body.id },
             {
-                $set: ctx.request.body
+                $set: body
             }
         )
         if (result) {
@@ -337,19 +325,19 @@ module.exports = {
     },
     // 获取分类
     getclassList: async (ctx, next) => {
-        console.log(ctx)
+        console.log(ctx.query.class)
         var key = ctx.query.class
         try {
             // var calssResult =await articleModel.find({categorie:{$in:}})
             var calssResult = await articleModel.aggregate([{ "$unwind": "$categorie" },
             { "$match": { "categorie": key } },
-            { "$project": { "id": 1, "title": 1, "createTime": 1, "imageShow": 1, "like": 1 } }]).sort({'createTime':-1})
+            { "$project": { "id": 1, "title": 1, "createTime": 1, "imageShow": 1, "like": 1 } }]).sort({ 'createTime': -1 })
             if (calssResult) {
                 ctx.body = {
                     code: '0000',
                     result: calssResult
                 }
-            }else{
+            } else {
                 ctx.body = {
                     code: '0000',
                     result: '没有匹配的的数据'

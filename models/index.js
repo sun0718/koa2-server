@@ -37,11 +37,12 @@ const acountSchema = mongoose.Schema({
 const articleSchema = mongoose.Schema({
   id:Number,
   title: String,
+  author: String,
   con: String,
   preface: String,
   mavonCon:String,
   categorie: [],
-  tagsId: [],
+  tags: [],
   like: {
     type:Number,
     default:0
