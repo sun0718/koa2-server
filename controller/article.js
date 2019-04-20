@@ -197,8 +197,7 @@ module.exports = {
                 msg: 'upload success',
                 result: {
                     filename: file.filename,
-                    // path: `https://sunfafa.cn/upload/${file.originalname}`,
-                    path: file.path,
+                    path: `https://sunfafa.cn/upload/${file.originalname}`,
                     originalname: file.originalname
                 }
             };
